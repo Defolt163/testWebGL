@@ -10,21 +10,34 @@ import SceneBackground from './SceneBackground'
 import { useSpring, a } from '@react-spring/three';
 import BusStopScene from './BusScene/BusStopScene';
 
-export default function ScrollRouter({}) {
+export default function ScrollRouter({ setScrollProgress, setCurrentScene, currentScene, setShowText, screenWidth }) {
+
   const scroll = useScroll();
-  const [currentScene, setCurrentScene] = useState("phone");
+
   useFrame(() => {
-    const progress = scroll.offset * 3;
-    if (progress < 1) setCurrentScene("phone");
-    else if (progress > 1 && progress < 1.39) setCurrentScene("car");
-    else if (progress > 1.39) setCurrentScene("passenger");
-    console.log(progress)
+    const progress = scroll.offset * 2;
+
+    if (progress < 1) {
+      setCurrentScene("phone")
+      if(progress > 0.5344080511007334 && progress < 1){
+        setShowText(true)
+      }else{
+        setShowText(false)
+      }
+    }
+    else if (progress > 1 && progress < 1.39)setCurrentScene("car")
+    else if (progress > 1.39){
+      setCurrentScene("passenger")
+      if(progress > 1.7){
+        setScrollProgress(true)
+      }else{
+        setScrollProgress(false)
+      }
+    }
   });
-  /* useFrame(() => {
-    offset.current = scroll.offset;
-    console.log(progress)
-    setShowText(offset.current > 0.9 && offset.current < 1.1);
-  }); */
+  useEffect(()=>{
+    console.log(currentScene)
+  }, [currentScene])
   const groupRef = useRef();
   const stylesAnimationPhone = useSpring({
     scale: currentScene === "phone" ? 1 : 0,
@@ -33,8 +46,8 @@ export default function ScrollRouter({}) {
   });
 
   const stylesAnimationCar = useSpring({
-    scale: currentScene === "car" ? 1 : 0,
-    rotation: currentScene === "car" ? [0, 0, 0] : [0, Math.PI / 2, 0],
+    scale: currentScene == "car" ? 1 : 0,
+    rotation: currentScene == "car" ? [0, 0, 0] : [0, Math.PI / 2, 0],
     config: { mass: 3, tension: 170, friction: 26 },
   });
 
@@ -46,18 +59,18 @@ export default function ScrollRouter({}) {
 
   return (
     <>
-      {currentScene === "phone" && <a.group rotation={stylesAnimationPhone.rotation} scale={stylesAnimationPhone.scale}>
-        <ScrollScenePhone/>
-        <SceneBackground color={'#ffff'} />
+      {<a.group visible={currentScene === 'phone'} rotation={stylesAnimationPhone.rotation} scale={stylesAnimationPhone.scale}>
+        <ScrollScenePhone screenWidth={screenWidth}/>
       </a.group>}
-      {currentScene === "car" && <a.group rotation={stylesAnimationCar.rotation} scale={stylesAnimationCar.scale}>
-        <ScrollSceneCar />
-        <SceneBackground color={'#1e1b4b'} />
+      {<a.group visible={currentScene === 'car'} rotation={stylesAnimationCar.rotation} scale={stylesAnimationCar.scale}>
+        <ScrollSceneCar screenWidth={screenWidth}/>
       </a.group>}
-      {currentScene === "passenger" && <a.group  rotation={stylesAnimationPassenger.rotation} scale={stylesAnimationPassenger.scale}>
-        <BusStopScene/>
-        <SceneBackground color={'#0e0021'} />
+      {<a.group visible={currentScene === 'passenger'} rotation={stylesAnimationPassenger.rotation} scale={stylesAnimationPassenger.scale}>
+        <BusStopScene screenWidth={screenWidth}/>
       </a.group>}
+      {currentScene === 'phone' && <SceneBackground color={'#ffff'} />}
+      {currentScene === 'car' && <SceneBackground color={'#1e1b4b'} />}
+      {currentScene === 'passenger' && <SceneBackground color={'#0e0021'} />}
     </>
   );
   return (

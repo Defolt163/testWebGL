@@ -9,21 +9,20 @@ import { motion } from 'framer-motion';
 import ScrollRouter from '../ScrollRouter'
 
 
-export default function BusStopScene() {
+export default function BusStopScene({screenWidth}) {
   const scroll = useScroll();
   const scrollRef = useRef(0);
   const scrollOffset = useRef(0);
   const cameraRef = useRef();
-  
 
   useFrame(() => {
     const offset = scroll.offset;
     scrollRef.current = offset;
     scrollOffset.current = scroll.offset;
     // Двигаем камеру по оси Y от -0.3 до 0.5, например
-    const cameraY = 0
-    const cameraX = 0
-    const cameraZ = 0
+    const cameraY = -0.2
+    const cameraX = 0.4
+    const cameraZ = screenWidth >= 1280 ? 2 : 2.5
     cameraRef.current.position.y = cameraY;
     cameraRef.current.position.x = cameraX;
     cameraRef.current.position.z = cameraZ;
@@ -31,21 +30,7 @@ export default function BusStopScene() {
 
   return (<>
     <OrthographicCamera ref={cameraRef}>
-        <BusStopModel scroll={scrollRef}/>
-        <Html transform distanceFactor={10}>
-          <div
-            style={{
-              width: "200px",
-              fontSize: "10px",
-              background: "rgba(0, 0, 0, 0.7)",
-              padding: "10px",
-              borderRadius: "5px"
-            }}
-          >
-            <h1>Hello, 3D World!</h1>
-            <p>This is an HTML element in the 3D scene.</p>
-          </div>
-        </Html>
+      <BusStopModel scroll={scrollRef}/>
     </OrthographicCamera>
   </>);
 }

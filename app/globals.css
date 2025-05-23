@@ -2,3 +2,28 @@
 body{
   margin: 0;
 }
+
+@theme {
+  --animate-showText: showText 1s ease-in-out;
+  @keyframes showText {
+    from {
+    opacity: 0%;
+    }
+    to {
+      opacity: 100%;
+    }
+  }
+}
+
+@keyframes showText {
+  from {
+    opacity: 0%;
+  }
+  to {
+    opacity: 100%;
+  }
+}
+
+.showTextAnim{
+  opacity: 0;
+}
