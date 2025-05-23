@@ -1,11 +1,9 @@
 'use client';
-
-import { Canvas, useFrame } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import { ScrollControls, useScroll, OrbitControls, Environment, OrthographicCamera, CameraControls, Text, Billboard, Html } from '@react-three/drei';
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import PhoneModel from './PhoneModel';
 import { useSpring, a } from '@react-spring/three';
-import { motion } from 'framer-motion';
 
 
 export default function ScrollMobileScenePhone({progress}) {
@@ -69,20 +67,6 @@ export default function ScrollMobileScenePhone({progress}) {
     <OrthographicCamera ref={cameraRef}
         position={[0, 0, 3]}>
       <PhoneModel scroll={scrollRef} />
-      {/* <Html position={[-0.59, -1, 0]} prepend  wrapperClass='w-1/2' fullscreen as='div'>
-        <motion.div initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: -20 }}
-          transition={{ duration: 0.6 }}
-          className="absolute w-1/2 top-1/4 left-5 text-gray-500 text-6xl font-bold pointer-events-none">
-          Мобильный сервис создания и бронирования поездок
-        </motion.div>
-        <motion.div initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: -20 }}
-          transition={{ duration: 0.6 }}
-          className="absolute w-1/2 top-1/2 left-5 text-gray-500 text-3xl font-bold pointer-events-none">
-          В современном ритме жизни, время имеет решающее значение. Наше приложение дает тебе возможность создавать поездки и бронировать трансфер в удобное для тебя время, экономя драгоценные минуты.
-        </motion.div>
-      </Html> */}
     </OrthographicCamera>
   </a.group>);
 }
